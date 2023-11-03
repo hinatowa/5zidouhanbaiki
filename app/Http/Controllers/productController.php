@@ -12,7 +12,7 @@ class productController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Product $product)
+    public function index(Product $products)
     {
         $products = Product::latest()->paginate(5);
        return view('index',compact('products'))
