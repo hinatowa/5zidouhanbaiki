@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Product;
 
 class productController extends Controller
 {
@@ -11,7 +12,7 @@ class productController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Product $product)
     {
         $products = Product::latest()->paginate(5);
        return view('index',compact('products'))
@@ -45,7 +46,7 @@ class productController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(Product $puroduct)
+    public function show(Product $product)
     {
         //
     }
@@ -56,7 +57,7 @@ class productController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(Product $puroduct)
+    public function edit(Product $product)
     {
         //
     }
@@ -68,7 +69,7 @@ class productController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request,Product $puroduct)
+    public function update(Request $request,Product $product)
     {
         //
     }
@@ -79,7 +80,7 @@ class productController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Product $puroduct)
+    public function destroy(Product $product)
     {
         //
     }
