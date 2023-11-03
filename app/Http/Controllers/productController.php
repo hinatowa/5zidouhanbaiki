@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Product;
+use App\Models\Sale;
 
 class productController extends Controller
 {
@@ -26,7 +27,9 @@ class productController extends Controller
      */
     public function create()
     {
-        //
+        $sales = sale::all();
+        return view('create')
+        ->with('sales',$sales);
     }
 
     /**
