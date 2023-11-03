@@ -25,4 +25,4 @@ Route::get('/products', 'App\Http\Controllers\ProductController@index')->name('p
 
 Route::get('/products/create', 'App\Http\Controllers\ProductController@create')->name('product.create');
 
-Route::post('/products/store/', 'App\Http\Controllers\ProductController@store')->name('product.store');
+Route::post('/products/store', 'App\Http\Controllers\ProductController@store')->name('product.store');
