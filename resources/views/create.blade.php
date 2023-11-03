@@ -63,8 +63,7 @@
         <a class="btn btn-success" href="{{ url('/list') }}">新規登録</a>
         </div>
         
-        <form method = "post" action = "{{ route('store') }}">  
-         @csrf  
+        
          <div class="col-12 mb-2 mt-2">
             <a class="btn btn-success" href="{{ url('/list') }}">戻る</a>
         </div>
