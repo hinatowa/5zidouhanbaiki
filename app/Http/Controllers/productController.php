@@ -40,7 +40,13 @@ class productController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'product_name' =>'required|max:20',
+            'company_id' => 'required|integer',
+            'price' => 'required|integer',
+            'stock' => 'required|integer',
+            'comment' => 'required|integer',
+            ]);
     }
 
     /**
