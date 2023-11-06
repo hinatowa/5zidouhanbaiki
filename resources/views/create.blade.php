@@ -53,19 +53,19 @@
             @enderror
             </div>
         </div>
-        <!-- <div class="image-table">
+        <div class="image-table">
             <tr>
                 <td><img  name="img_path"class="ju_image" src="#" alt="image">商品画像</td>
                 <td><input id="image" type="file" name="image" ></td>
             </tr>
-        </div> -->
+        </div>
         <div class="col-12 mb-2 mt-2">
-        <a class="btn btn-success" href="{{ url('/list') }}">新規登録</a>
+                <button type="submit" class="btn btn-primary w-100">登録</button>
         </div>
         
         
-         <div class="col-12 mb-2 mt-2">
-            <a class="btn btn-success" href="{{ url('/list') }}">戻る</a>
+        <div class="col-12 mb-2 mt-2">
+            <a class="btn btn-success" href="{{ url('/products') }}">戻る</a>
         </div>
     </div>
 </form>

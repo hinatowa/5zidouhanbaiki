@@ -28,6 +28,7 @@
             <td style="text-align:right">{{ $product->price }}円</td>
             <td style="text-align:right">{{ $product->stock }}</td>
             <td style="text-align:right">{{ $product->company_id }}</td>
+            <a class=”btn btn-primary” href="{{ route('product.edit',$product->id) }}">詳細</a> 
         </tr>
         @endforeach
     </table>
