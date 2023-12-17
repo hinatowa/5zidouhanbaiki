@@ -6,12 +6,11 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 
-class Product extends Model
+class Companie extends Model
 {
     use HasFactory;
-    // protected $table = 'companies';
-    public function Companie(){
-        return $this -> belongsTo(Companie::class);
+
+    public function Products(){
+        return $this -> hasMany(Product::class);
     }
-    
 }
