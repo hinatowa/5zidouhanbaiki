@@ -7,6 +7,7 @@ use App\Models\Product;
 use App\Models\Sale;
 use App\Models\Companie;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class ProductController extends Controller
 {
@@ -38,12 +39,52 @@ class ProductController extends Controller
              Product::with('companie')->get();
 
          $products = $products->paginate(5);
-        // $products = Product::latest()->paginate(5);
-       return view('index',compact('products'))
-       ->with('companies',$companies);
+         return view('index',compact('products'))
+         ->with('companies',$companies);
+       
        
     }
 
+    public function getlistAjax(Request $request)
+    {
+        // Log::emergency("emergency ログ!");
+        // Log::alert("alert ログ!");
+        // Log::critical("critical ログ!");
+        // Log::error("error ログ!");
+        // Log::warning("warning ログ!");
+        // Log::notice("notice ログ!");
+        // Log::info("info ログ!");
+        Log::debug("getlistAjaxスタート");
+
+         $products = Product::query();
+         $companies = companie::all();
+
+         $products->select('products.*','companies.company_name');
+         $products->join('companies','products.company_id','=','companies.id');	//内部結合
+
+            /* キーワードから検索処理 */
+         $keyword = $request->input('keyword');
+         Log::debug("getlistAjaxkeyword=".$keyword);
+         if(!empty($keyword)) {//$keyword　が空ではない場合、検索処理を実行します
+             $products->where('product_name', 'LIKE', "%{$keyword}%");//SELECT * FROM products WHERE product_name LIKE '%コーラ%'
+             }
+
+         $companiey_id = $request->input('companies_name');
+         if(!empty($companiey_id)) {//$companiey_name　が空ではない場合、検索処理を実行します
+             $products->where('company_id', '=', "{$companiey_id}");//SELECT * FROM products WHERE company_id = 1
+             }
+         
+         $products = $products->get();
+         Log::debug("getlistAjax終了");
+         return $products;
+
+        //  Product::with('companie')->get();
+
+        //  $products = $products->paginate(5);
+        //  return view('index',compact('products'))
+        //  ->with('companies',$companies);
+        
+    }
     // public function index(Product $products)
     // {
     //     $products = Product::latest()->paginate(5);

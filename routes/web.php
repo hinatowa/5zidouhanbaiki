@@ -35,3 +35,5 @@ Route::put('/product/edit/{product}',[App\Http\Controllers\ProductController::cl
 Route::delete('/products/{product}',[App\Http\Controllers\ProductController::class,'destroy'])->name('product.destroy');
 
 Route::get('/product/show/{product}', [App\Http\Controllers\ProductController::class,'show'])->name('product.show');
+
+Route::get('/product/getlistAjax', [App\Http\Controllers\ProductController::class,'getlistAjax'])->name('product.getlistAjax');
