@@ -9,6 +9,7 @@
             <div>
                 <form action="" method="GET">
                 @csrf
+                
                     <input type="text" name="keyword">
                     <select name="companies_name" data-toggle="select">
                         <option value="">メーカー名</option>
@@ -16,24 +17,28 @@
                         <option value="{{ $companie->id }}">{{ $companie->company_name }}</option>
                             @endforeach
                     </select>
-
+                    
                    
                         <button class="btn" >検索</button>
 
                     <script>
                         
-                        $('.btn').on('click', function(){
+                        $('.btn').on('click', function (){
+                            
                             const keyword = $('input[name="keyword"]').val();
-                            const companies_name = $('input[name="companies_name"]').val();
+                            const companies_name = $('[name="companies_name"]').val();
                             $.ajax({
                                 type: "get", //HTTP通信の種類
                                 url: "/5zidouhanbaiki/public/product/getlistAjax",
                                 dataType: "json",
-                                data: { keyword : keyword,companies_name },
+                                data: { keyword : keyword , companies_name},
                                 })
                                 //通信が成功したとき
                                 .done((res) => { // resの部分にコントローラーから返ってきた値 $users が入る
+                                    $('#productTable').empty();
                                     console.log("Ajax成功");
+                                    console.log(companies_name);
+                                    console.log(keyword);
                                     console.log(res);
                                     $.each(res, function (index, value) {
                                         html = `
@@ -57,7 +62,9 @@
                                 console.log(error.statusText);
                                 console.log(error);
                                 });
+                                
                             return false;
+                            
                         });
                     </script>
                 </form>

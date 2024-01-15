@@ -76,7 +76,8 @@ class ProductController extends Controller
          
          $products = $products->get();
          Log::debug("getlistAjax終了");
-         return $products;
+         return $products;   
+        // return response()->json($products , $companies);      
 
         //  Product::with('companie')->get();
 
