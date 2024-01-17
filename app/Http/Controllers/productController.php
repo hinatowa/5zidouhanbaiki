@@ -78,25 +78,25 @@ class ProductController extends Controller
         /* 価格上限から検索処理 */
         $jougenpr = $request->input('jougenpr');
         if(!empty($jougenpr)) {//$jougenpr　が空ではない場合、検索処理を実行します
-            $products->where('products.price', '>=', "{$jougenpr}");//SELECT * FROM products WHERE product_price >= '$jougenpr'
+            $products->where('products.price', '<=', "{$jougenpr}");//SELECT * FROM products WHERE product_price >= '$jougenpr'
             }
 
        /* 価格下限から検索処理 */
         $kagenpr = $request->input('kagenpr');
         if(!empty($kagenpr)) {//$kagenpr　が空ではない場合、検索処理を実行します
-            $products->where('products.price', '<=', "{$kagenpr}");//SELECT * FROM products WHERE product_price >= '$kagenpr'
+            $products->where('products.price', '>=', "{$kagenpr}");//SELECT * FROM products WHERE product_price >= '$kagenpr'
             }
 
        /* 在庫上限から検索処理 */
         $jougenst = $request->input('jougenst');
         if(!empty($jougenst)) {//$jougenst　が空ではない場合、検索処理を実行します
-            $products->where('products.stock', '>=', "{$jougenst}");//SELECT * FROM products WHERE product_stock >= '$jougenst'
+            $products->where('products.stock', '<=', "{$jougenst}");//SELECT * FROM products WHERE product_stock >= '$jougenst'
             }
 
        /* 在庫下限から検索処理 */
         $kagenst = $request->input('kagenst');
         if(!empty($kagenst)) {//$kagenst　が空ではない場合、検索処理を実行します
-            $products->where('products.stock', '<=', "{$kagenst}");//SELECT * FROM products WHERE product_stock >= '$kagenst'
+            $products->where('products.stock', '>=', "{$kagenst}");//SELECT * FROM products WHERE product_stock >= '$kagenst'
             }
 
          
