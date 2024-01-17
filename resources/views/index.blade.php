@@ -26,7 +26,7 @@
                         $('.btn').on('click', function (){
                             
                             const keyword = $('input[name="keyword"]').val();
-                            const companies_name = $('[name="companies_name"]').val();
+                            const companies_name = $('select[name="companies_name"]').val();
                             $.ajax({
                                 type: "get", //HTTP通信の種類
                                 url: "/5zidouhanbaiki/public/product/getlistAjax",
