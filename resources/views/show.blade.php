@@ -29,7 +29,7 @@
             <div class="form-group">
             <tr>
                 <th>商品画像</th>
-                <td><img style="width:80px;" src="{{asset('storage/images'.$product->img_path)}}" ></td>
+                <td><img style="width:80px;" src="{{asset('storage/images/'.$product->img_path)}}" ></td>
             </tr>
             </div>
         </div>

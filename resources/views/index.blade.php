@@ -18,8 +18,30 @@
                             @endforeach
                     </select>
                     
-                   
-                        <button class="btn" >検索</button>
+                    <div class="price.search">
+                        <div class="jougen">
+                            <label for="jougen">価格上限</label>
+                                <input type="number" name="jougenpr" min="100" max="500">
+                        </div>
+
+                        <div class="kagen">
+                            <label for="kagen">価格下限</label>
+                                <input type="number" name="kagenpr" min="100" max="500">
+                        </div>
+                    </div>
+
+                    <div class="stock.search">
+                        <div class="jougen">
+                            <label for="jougen">在庫上限</label>
+                                <input type="number" name="jougenst" min="1" max="500">
+                        </div>
+
+                        <div class="kagen">
+                            <label for="kagen">在庫下限</label>
+                                <input type="number" name="kagenst" min="1" max="500">
+                        </div>
+                    </div>
+                        <button class="btn btn-secondary" >検索</button>
 
                     <script>
                         
@@ -27,11 +49,15 @@
                             
                             const keyword = $('input[name="keyword"]').val();
                             const companies_name = $('select[name="companies_name"]').val();
+                            const jougenpr = $('input[name="jougenpr"]').val();
+                            const kagenpr = $('input[name="kagenpr"]').val();
+                            const jougenst = $('input[name="jougenst"]').val();
+                            const kagenst = $('input[name="kagenst"]').val();
                             $.ajax({
                                 type: "get", //HTTP通信の種類
                                 url: "/5zidouhanbaiki/public/product/getlistAjax",
                                 dataType: "json",
-                                data: { keyword : keyword , companies_name},
+                                data: { keyword : keyword , companies_name , jougenpr , kagenpr , jougenst , kagenst},
                                 })
                                 //通信が成功したとき
                                 .done((res) => { // resの部分にコントローラーから返ってきた値 $users が入る
@@ -39,6 +65,10 @@
                                     console.log("Ajax成功");
                                     console.log(companies_name);
                                     console.log(keyword);
+                                    console.log(jougenpr);
+                                    console.log(kagenpr);
+                                    console.log(jougenst);
+                                    console.log(kagenst);
                                     console.log(res);
                                     $.each(res, function (index, value) {
                                         html = `
@@ -50,7 +80,7 @@
                                                         <td class="col-xs-2">${value.stock}</td>
                                                         <td class="col-xs-2">${value.company_name}</td>
                                                         <td class="col-xs-2"><a class="btn btn-primary" href="http://localhost:8888/5zidouhanbaiki/public/product/show/${value.id}">詳細</a></td>
-                                                        <td class="col-xs-2"><button type="button" class="btn btn-sm btn-danger" onclick='return confirm("削除しますか？");'>削除</button></td>
+                                                        <td class="col-xs-2"><button type="button" class="btn btn-danger" onclick='return confirm("削除しますか？");'>削除</button></td>
                                                     </tr>
                                         `;
                                          $("#productTable").append(html); //できあがったテンプレートを user-tableクラスの中に追加
