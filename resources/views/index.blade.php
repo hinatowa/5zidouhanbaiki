@@ -41,8 +41,9 @@
                                 <input type="number" name="kagenst" min="1" max="500">
                         </div>
                     </div>
-                        <button class="btn btn-secondary" >検索</button>
+                        <button id="btn" class="btn btn-secondary" >検索</button>
 
+                </form>
                         <div class="text-right">
                           <a class="btn btn-success" href="{{ route('product.create') }}">新規登録</a>
                         </div>
@@ -50,12 +51,12 @@
         
                     <table id="productTable" class="table table-bordered">
                         <tr>
-                            <th>ID</th>
+                            <th data-column="id">@sortablelink('id','ID')</th>
                             <th>商品画像</th>
-                            <th>商品名</th>
-                            <th>価格</th>
-                            <th>在庫数</th>
-                            <th>メーカー</th>
+                            <th data-column="product_name">@sortablelink('product_name','商品名')</th>
+                            <th data-column="price">@sortablelink('price','価格')</th>
+                            <th data-column="stock">@sortablelink('stock','在庫数')</th>
+                            <th data-column="company_name">@sortablelink('company_name','メーカー')</th>
                             <th>詳細表示</th>
                             <th>削除</th>
                         </tr>                   
@@ -63,9 +64,32 @@
             </div>     
         </div>             
 
+                <form action="" method="GET">
+                        @csrf
                     <script>
-                        
-                        $('.btn').on('click', function (){
+                        $('#productTable th').on('click', function (){
+                            const columnname=$(this).data("column");
+                            console.log("クリックされた カラム名"+columnname);
+                            let direction = $(this).hasClass("asc");
+                            if(direction){
+                                direction = "desc";
+                            } else {
+                                direction = "asc";
+                            }
+                            $(this).removeClass("asc desc");
+                            $(this).addClass(direction);
+                            ajaxRequest(columnname,direction);
+                            return false;
+                        });
+                        $('#btn').on('click', function (){
+                            ajaxRequest();
+                            return false;
+                        });
+
+
+
+                        function ajaxRequest(columnname,direction){
+
                             $('.product-list').empty();
                             const keyword = $('input[name="keyword"]').val();
                             const companies_name = $('select[name="companies_name"]').val();
@@ -74,10 +98,19 @@
                             const jougenst = $('input[name="jougenst"]').val();
                             const kagenst = $('input[name="kagenst"]').val();
                             $.ajax({
-                                type: "get", //HTTP通信の種類
-                                url: "/5zidouhanbaiki/public/product/getlistAjax",
-                                dataType: "json",
-                                data: { keyword : keyword , companies_name , jougenpr , kagenpr , jougenst , kagenst},
+                                    type: "get", //HTTP通信の種類
+                                    url: "/5zidouhanbaiki/public/product/getlistAjax",
+                                    dataType: "json",
+                                    data: {
+                                        keyword : keyword ,
+                                        companies_name ,
+                                        jougenpr , 
+                                        kagenpr , 
+                                        jougenst , 
+                                        kagenst ,
+                                        sort: columnname,
+                                        direction: direction,
+                                    },
                                 })
                                 //通信が成功したとき
                                 .done((res) => { // resの部分にコントローラーから返ってきた値 $users が入る
@@ -114,9 +147,19 @@
                                 });
                                 
                             return false;
-                            
-                        });
+
+                        }
+
+                        
+
+
+
+
+
+
+
                     </script>
+
                 </form>
             
            

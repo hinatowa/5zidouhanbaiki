@@ -99,7 +99,11 @@ class ProductController extends Controller
             $products->where('products.stock', '>=', "{$kagenst}");//SELECT * FROM products WHERE product_stock >= '$kagenst'
             }
 
-         
+        $sort = $request->input('sort');
+        $direction = $request->input('direction');
+        if(!empty($sort)) {//$kagenst　が空ではない場合、検索処理を実行します
+            $products->orderBy($sort, $direction);//SELECT * FROM products WHERE product_stock >= '$kagenst'
+            }
          
          $products = $products->get();
          Log::debug("getlistAjax終了");
