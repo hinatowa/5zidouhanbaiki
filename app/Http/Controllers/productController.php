@@ -56,24 +56,24 @@ class ProductController extends Controller
         // Log::info("info ログ!");
         Log::debug("getlistAjaxスタート");
 
-         $products = Product::query();
-         $companies = companie::all();
+        $products = Product::query();
+        $companies = companie::all();
 
-         $products->select('products.*','companies.company_name');
-         $products->join('companies','products.company_id','=','companies.id');	//内部結合
+        $products->select('products.*','companies.company_name');
+        $products->join('companies','products.company_id','=','companies.id');	//内部結合
 
         /* キーワードから検索処理 */
-         $keyword = $request->input('keyword');
-         Log::debug("getlistAjaxkeyword=".$keyword);
-         if(!empty($keyword)) {//$keyword　が空ではない場合、検索処理を実行します
-             $products->where('product_name', 'LIKE', "%{$keyword}%");//SELECT * FROM products WHERE product_name LIKE '%コーラ%'
-             }
+        $keyword = $request->input('keyword');
+        Log::debug("getlistAjaxkeyword=".$keyword);
+        if(!empty($keyword)) {//$keyword　が空ではない場合、検索処理を実行します
+            $products->where('product_name', 'LIKE', "%{$keyword}%");//SELECT * FROM products WHERE product_name LIKE '%コーラ%'
+            }
 
         /* セレクトから検索処理 */
-         $companiey_id = $request->input('companies_name');
-         if(!empty($companiey_id)) {//$companiey_name　が空ではない場合、検索処理を実行します
-             $products->where('company_id', '=', "{$companiey_id}");//SELECT * FROM products WHERE company_id = 1
-             }
+        $companiey_id = $request->input('companies_name');
+        if(!empty($companiey_id)) {//$companiey_name　が空ではない場合、検索処理を実行します
+            $products->where('company_id', '=', "{$companiey_id}");//SELECT * FROM products WHERE company_id = 1
+            }
 
         /* 価格上限から検索処理 */
         $jougenpr = $request->input('jougenpr');
@@ -105,9 +105,9 @@ class ProductController extends Controller
             $products->orderBy($sort, $direction);//SELECT * FROM products WHERE product_stock >= '$kagenst'
             }
          
-         $products = $products->get();
-         Log::debug("getlistAjax終了");
-         return $products;   
+        $products = $products->get();
+        Log::debug("getlistAjax終了");
+        return $products;   
         // return response()->json($products , $companies);      
 
         //  Product::with('companie')->get();
@@ -144,39 +144,39 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
+    
+        $request->validate([
+        'name' =>'required|max:20',
+        'companies_id' => 'required|integer',
+        'price' => 'required|integer',
+        'stock' => 'required|integer',
+        'comment' => 'required|max:140',
+        'image' => 'image|max:1024'
+        ]);
+
+        try {
+            DB::beginTransaction();
+
+        $product = new Product();
         
-            $request->validate([
-            'name' =>'required|max:20',
-            'companies_id' => 'required|integer',
-            'price' => 'required|integer',
-            'stock' => 'required|integer',
-            'comment' => 'required|max:140',
-            'image' => 'image|max:1024'
-            ]);
+        $product->company_id = $request->companies_id;
+        $product->product_name = $request->name;
+        $product->price = $request->price;
+        $product->stock = $request->stock;
+        $product->comment = $request->comment;
 
-            try {
-                DB::beginTransaction();
+        
+        
 
-            $product = new Product();
-            
-            $product->company_id = $request->companies_id;
-            $product->product_name = $request->name;
-            $product->price = $request->price;
-            $product->stock = $request->stock;
-            $product->comment = $request->comment;
+        $product->save();
 
-            
-            
+        DB::commit();
+            } catch (Throwable $e) {
+        DB::rollBack();
+        }
 
-            $product->save();
-
-            DB::commit();
-             } catch (Throwable $e) {
-            DB::rollBack();
-            }
-
-            return redirect()->route('product.index')
-            ->with('message','商品を登録しました');
+        return redirect()->route('product.index')
+        ->with('message','商品を登録しました');
 
             
     }
@@ -218,7 +218,7 @@ class ProductController extends Controller
     {
         try {
             DB::beginTransaction();
-        $request->validate([
+             $request->validate([
             'name' =>'required|max:20',
             'companies_id' => 'required|integer',
             'price' => 'required|integer',

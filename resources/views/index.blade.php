@@ -144,7 +144,7 @@
                         }
                     </script>
 
-                </form>＋＋—
+                </form>
             
            
     {{ $products->links('vendor.pagination.bootstrap-4') }}
