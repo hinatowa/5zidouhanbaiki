@@ -80,6 +80,8 @@
                             ajaxRequest(columnname,direction);
                             return false;
                         });
+
+
                         $('#btn').on('click', function (){
                             ajaxRequest();
                             return false;
@@ -111,13 +113,13 @@
                                 //通信が成功したとき
                                 .done((res) => { // resの部分にコントローラーから返ってきた値 $users が入る                                    
                                     console.log("Ajax成功");
-                                    console.log(companies_name);
-                                    console.log(keyword);
-                                    console.log(jougenpr);
-                                    console.log(kagenpr);
-                                    console.log(jougenst);
-                                    console.log(kagenst);
-                                    console.log(res);                                   
+                                    // console.log(companies_name);
+                                    // console.log(keyword);
+                                    // console.log(jougenpr);
+                                    // console.log(kagenpr);
+                                    // console.log(jougenst);
+                                    // console.log(kagenst);
+                                    // console.log(res);                                   
                                     $.each(res, function (index, value) {
                                         html = `                                                                                                    
                                             <tr class="product-list">
@@ -128,7 +130,7 @@
                                                 <td class="col-xs-2">${value.stock}</td>
                                                 <td class="col-xs-2">${value.company_name}</td>
                                                 <td class="col-xs-2"><a class="btn btn-primary" href="http://localhost:8888/5zidouhanbaiki/public/product/show/${value.id}">詳細</a></td>
-                                                <td class="col-xs-2"><button type="button" class="btn btn-danger" onclick='return confirm("削除しますか？");'>削除</button></td>
+                                                <td class="col-xs-2"><button data-product_id="${value.id}" type="button" class="btn btn-danger">削除</button></td>
                                             </tr>                                        
                                                 `;
                                         $("#productTable").append(html); //できあがったテンプレートを table table-borderedクラスの中に追加
@@ -137,14 +139,56 @@
                                 //通信が失敗したとき
                                 .fail((error) => {
                                 console.log("Ajax失敗");
-                                console.log(error.statusText);
-                                console.log(error);
+                                // console.log(error.statusText);
+                                // console.log(error);
                                 });
                             return false;
-                        }
+                        };
                     </script>
+                </fome>
+                <form action="" method="POST">
+                @csrf
+                    <script>
+                        $.ajaxSetup({
+                            headers: {
+                                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                                        }
+                                    });
 
+                            $(document).on("click", '.btn-danger', function(){
+                                let deleteConfirm = confirm('削除してよろしいでしょうか？');                                
+                                if(deleteConfirm == true) {
+                                    let clickEle = $(this)
+                                    let productID = clickEle.attr('data-product_id');
+                                    console.log(productID);
+                                    $.ajax({
+                                        type: 'POST',
+                                        url: '/5zidouhanbaiki/public/product/destroyAjax/' + productID,
+                                        // url: '/product/destroyAjax/{id}'+productID, //productID にはレコードのIDが代入されています
+                                        dataType: "json",
+                                        data: {
+                                            id : productID,
+                                        },
+                                    })
+                                    
+                                    .done(function(res)  { // resの部分にコントローラーから返ってきた値 $users が入る                                    
+                                    console.log("Ajax成功");
+                                    clickEle.parents('tr').remove();
+                                    })
+                                    .fail((error) => {
+                                    console.log("Ajax失敗");
+                                    });
+                                    //”削除しても良いですか”のメッセージで”いいえ”を選択すると次に進み処理がキャンセルされます
+                                } else {
+                                    (function(e) {
+                                    e.preventDefault()
+                                    });
+                                };
+                                
+                            });
+                    </script>
                 </form>
+                
             
            
     {{ $products->links('vendor.pagination.bootstrap-4') }}

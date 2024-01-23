@@ -164,7 +164,13 @@ class ProductController extends Controller
         $product->price = $request->price;
         $product->stock = $request->stock;
         $product->comment = $request->comment;
-
+        
+        if($request->image){
+            $original = request()->file('image')->getClientOriginalName();
+            $name = date('Ymd_His').'_'.$original;
+            request()->file('image')->move('storage/images',$name);
+            $product->img_path = $name;
+        }
         
         
 
@@ -224,7 +230,7 @@ class ProductController extends Controller
             'price' => 'required|integer',
             'stock' => 'required|integer',
             'comment' => 'required|max:140',
-            'mage' => 'image|max:1024'
+            'image' => 'image|max:1024'
             ]);
 
             $product->company_id = $request->companies_id;
@@ -265,4 +271,32 @@ class ProductController extends Controller
         return redirect()->route('product.index')
         ->with('success'.$product->name.'を削除しました');
     }
+
+    public function destroyAjax(Request $request) 
+    {
+        // Log::emergency("emergency ログ!");
+        // Log::alert("alert ログ!");
+        // Log::critical("critical ログ!");
+        // Log::error("error ログ!");
+        // Log::warning("warning ログ!");
+        // Log::notice("notice ログ!");
+        // Log::info("info ログ!");        
+        Log::debug("destroyAjaxスタート");
+        //ajaxメソッドから送信されたデータは$requestに格納されます
+        //ajas側で送信したデータの名前は"id"という名前に設定しているため
+        //コントローラーで使うには $request->id で出力します
+             
+        $products = Product::find($request->id);
+        //データベースのProductsテーブルから()で指定されたiDのレコードを代入します
+        $products->delete();
+        Log::debug("destroyAjaxproducts=".$products);
+        //productsに代入されているレコード（行）を削除します
+        // return redirect('/5zidouhanbaiki/public/product/getlistAjax');
+        $products = $products->get();
+        Log::debug("destroyAjax終了");
+        return $products;   
+    }
+        
+        
+        
 }

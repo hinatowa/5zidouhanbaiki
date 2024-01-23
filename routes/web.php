@@ -37,3 +37,5 @@ Route::delete('/products/{product}',[App\Http\Controllers\ProductController::cla
 Route::get('/product/show/{product}', [App\Http\Controllers\ProductController::class,'show'])->name('product.show');
 
 Route::get('/product/getlistAjax', [App\Http\Controllers\ProductController::class,'getlistAjax'])->name('product.getlistAjax');
+
+Route::post('/product/destroyAjax/{id}', [App\Http\Controllers\ProductController::class,'destroyAjax'])->name('product.destroyAjax');
