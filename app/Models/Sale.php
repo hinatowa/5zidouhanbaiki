@@ -11,4 +11,7 @@ class Sale extends Model
 {
     use HasFactory;
     use Sortable;
+    protected $table = 'sales';
+    protected $dates =  ['created_at', 'updated_at'];
+    protected $fillable = ['id', 'product_id'];
 }
