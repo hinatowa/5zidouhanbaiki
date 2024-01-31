@@ -58,7 +58,28 @@
                             <th data-column="company_name">@sortablelink('company_name','メーカー')</th>
                             <th>詳細表示</th>
                             <th>削除</th>
-                        </tr>                   
+                        </tr>      
+                        
+                        <!-- @foreach ($products as $product)
+                        <tr>
+                            <td style="text-align:right">{{ $product->id }}</td>
+                            <td><img style="width:80px;" src="{{asset('storage/images/'.$product->img_path)}}" ></td>
+                            <td style="text-align:right">{{ $product->product_name }}</td>
+                            <td style="text-align:right">{{ $product->price }}円</td>
+                            <td style="text-align:right">{{ $product->stock }}</td>
+                            <td style="text-align:right">{{ $product->company_name }}</td>
+                            <td>
+                                <a class="btn btn-primary" href="{{ route('product.show',$product->id) }}">詳細</a> 
+                            </td>
+                            <td style=”text-align:center”>
+                                <form action="{{ route('product.destroy',$product->id) }}" method="POST">
+                                @csrf
+                                @method('DELETE')
+                                    <button type="submit" class="btn btn-danger" onclick='return confirm("削除しますか？");'>削除</button>
+                                </form>
+                            </td>
+                        </tr>
+                        @endforeach -->
                     </table>
         </div>     
     </div>             
@@ -88,7 +109,7 @@
                         });
 
                         function ajaxRequest(columnname,direction){
-                            $('.product-list').empty();
+                            $('.product-list').empty(); //値、画面を更新する。
                             const keyword = $('input[name="keyword"]').val();
                             const companies_name = $('select[name="companies_name"]').val();
                             const jougenpr = $('input[name="jougenpr"]').val();
@@ -111,7 +132,7 @@
                                     },
                             })
                                 //通信が成功したとき
-                                .done((res) => { // resの部分にコントローラーから返ってきた値 $users が入る                                    
+                                .done((res) => { // resの部分にコントローラーから返ってきた値 $products が入る                                    
                                     console.log("Ajax成功");
                                     // console.log(companies_name);
                                     // console.log(keyword);
@@ -144,18 +165,17 @@
                                 });
                             return false;
                         };
-                    </script>
-                </fome>
-                <form action="" method="POST">
-                @csrf
-                    <script>
+                    
+                
+                
+                    
                         $.ajaxSetup({
                             headers: {
                                         'X-CSRF-TOKEN': '{{ csrf_token() }}'
                                         }
                                     });
 
-                            $(document).on("click", '.btn-danger', function(){
+                            $(document).on('click', '.btn-danger', function(){
                                 let deleteConfirm = confirm('削除してよろしいでしょうか？');                                
                                 if(deleteConfirm == true) {
                                     let clickEle = $(this)
@@ -187,10 +207,6 @@
                                 
                             });
                     </script>
-                </form>
-                
-            
-           
     {{ $products->links('vendor.pagination.bootstrap-4') }}
  
 @endsection

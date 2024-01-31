@@ -17,4 +17,6 @@ class Product extends Model
     }
     
     public $sortable = ['id','companu_id','product_name','price','stock'];//追記(ソートに使うカラムを指定
+
 }
+

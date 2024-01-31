@@ -62,6 +62,8 @@ class ProductController extends Controller
         $products->select('products.*','companies.company_name');
         $products->join('companies','products.company_id','=','companies.id');	//内部結合
 
+
+
         /* キーワードから検索処理 */
         $keyword = $request->input('keyword');
         Log::debug("getlistAjaxkeyword=".$keyword);

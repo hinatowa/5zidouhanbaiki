@@ -13,25 +13,28 @@ class ApiSaleController extends Controller
      * @return \Illuminate\Http\Response
      */
 
-    public function store(StoreSaleRequest $request)
+    public function store(Request $request)
     {
-    $sale = Sale::create($request->all());
+        $product = Product::create($request->all());
 
-    return response()->json([
-        'status' => true,
-        'message' => "Product Created successfully!",
-        'sales' => $sales
-    ], 200);
-
+        return response()->json([
+            'status' => true,
+            'message' => "Product Created successfully!",
+            'product' => $product
+        ],);
 
     }
 
     public function index()
     {
-        $sales = Sales::all();
-        return response()->json([
-            'status' => true,
-            'sales' => $sales
+       return [
+        "テスト" => true
+       ];
+
+       $sales = Sale::all();
+            return response()->json([
+                'status' => true,
+                'sales' => $sales
         ]);
     }
 
