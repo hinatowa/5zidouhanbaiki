@@ -19,28 +19,28 @@ class ProductController extends Controller
     public function index(Request $request)
     {
 
-         /* テーブルから全てのレコードを取得する */
-         $products = Product::query();//SELECT * FROM 'products'
-         $companies = companie::all();
-         $products->select('products.*','companies.company_name');
-         $products->join('companies','products.company_id','=','companies.id');	//内部結合
+        /* テーブルから全てのレコードを取得する */
+        $products = Product::query();//SELECT * FROM 'products'
+        $companies = companie::all();
+        $products->select('products.*','companies.company_name');
+        $products->join('companies','products.company_id','=','companies.id');	//内部結合
 
-         /* キーワードから検索処理 */
-         $keyword = $request->input('keyword');
-         if(!empty($keyword)) {//$keyword　が空ではない場合、検索処理を実行します
-             $products->where('product_name', 'LIKE', "%{$keyword}%");//SELECT * FROM products WHERE product_name LIKE '%コーラ%'
-             }
+        /* キーワードから検索処理 */
+        $keyword = $request->input('keyword');
+        if(!empty($keyword)) {//$keyword　が空ではない場合、検索処理を実行します
+            $products->where('product_name', 'LIKE', "%{$keyword}%");//SELECT * FROM products WHERE product_name LIKE '%コーラ%'
+            }
 
-         $companiey_id = $request->input('companies_name');
-         if(!empty($companiey_id)) {//$companiey_name　が空ではない場合、検索処理を実行します
-             $products->where('company_id', '=', "{$companiey_id}");//SELECT * FROM products WHERE company_id = 1
-             }
-             
-             Product::with('companie')->get();
+        $companiey_id = $request->input('companies_name');
+        if(!empty($companiey_id)) {//$companiey_name　が空ではない場合、検索処理を実行します
+            $products->where('company_id', '=', "{$companiey_id}");//SELECT * FROM products WHERE company_id = 1
+            }
+            
+            Product::with('companie')->get();
 
-         $products = $products->paginate(5);
-         return view('index',compact('products'))
-         ->with('companies',$companies);
+        $products = $products->paginate(5);
+        return view('index',compact('products'))
+        ->with('companies',$companies);
        
        
     }
