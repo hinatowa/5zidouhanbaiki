@@ -107,10 +107,11 @@ class ProductController extends Controller
     //         $products->orderBy($sort, $direction);//SELECT * FROM products WHERE product_stock >= '$kagenst'
     //         }
          
-        $model = new Product();
-        $kensaku = $model->product_kensaku($request);
+        $product = new Product();
+        var_dump($product);
+        $kensaku = $product->product_kensaku($request);
 
-        $products = $products->get();
+        $products = $kensaku->get();
         Log::debug("getlistAjax終了");
         return $products;   
         // return response()->json($products , $companies);      

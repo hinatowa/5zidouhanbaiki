@@ -11,6 +11,7 @@ class Product extends Model
 {
     use HasFactory;
     use Sortable;
+   
     // protected $table = 'companies';
     public function Companie(){
         return $this -> belongsTo(Companie::class);
