@@ -30,39 +30,38 @@ class ApiSaleController extends Controller
 
     public function index(Request $request)
     {
-        $products = Product::query();
-        $sales = sale::all();
+        $productID = $request->product_id;
+        $products = Product::find($productID);
+        //在庫数チェック③
+        if(empty($products)){
+            return response()->json("1商品が見つかりませんid=$productID");
+        }
 
-        $products->join('sales','products.id','=','sales.product_id');	//内部結合
+        if($products->stock <= 0){
+            return response()->json("2在庫がありませんid=$productID");
+        }
 
-        
+        try {
+            DB::beginTransaction();
+            //salesテーブルにレコードを追加①
+            DB::table('sales')->insert([ 
+                'product_id' => $productID
+            ]);
+            //productsテーブルも在庫数を減算②
+            $stocksave = --$products->stock;
+            //productテーブルのidが$productIDのstockを$stocksaveに更新する
+            DB::table('products')->where('id', $productID)->update([
+                'stock' => $stocksave
+            ]);
 
-        return DB::table('sales')
-            ->selectRaw('id')
-            ->selectRaw('product_id')
-            ->selectRaw('created_at')
-            ->selectRaw('updated_at')
-            ->get();
-    //    return [
-    //     "テスト" => true
-    //    ];
+            
 
-    //    try {
-    //     DB::beginTransaction();
-
-    //     $sale = new Sales();
-    //     return response()->json(Sales::all());
-
-
-    //     DB::commit();
-    //         } catch (Throwable $e) {
-    //     DB::rollBack();
-    //     }
-    //    $sales = Sale::all();
-    //         return response()->json([
-    //             'status' => true,
-    //             'sales' => $sales
-    //     ]);
+            DB::commit();
+        } catch (Throwable $e) {
+            DB::rollBack();
+            return response()->json("システムエラーです".$e);
+        }
+        return response()->json(Sale::all());
     }
 
     /**
