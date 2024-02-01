@@ -16,7 +16,7 @@ class Product extends Model
         return $this -> belongsTo(Companie::class);
     }
     
-    public function kensaku($request){
+    public function kensaku($data){
         $products = Product::query();
         $companies = companie::all();
 
@@ -67,6 +67,7 @@ class Product extends Model
             $products->orderBy($sort, $direction);//SELECT * FROM products WHERE product_stock >= '$kagenst'
             }
 
+            return $product;
     }
 
     public $sortable = ['id','companu_id','product_name','price','stock'];//追記(ソートに使うカラムを指定
