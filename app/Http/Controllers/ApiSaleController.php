@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Product;
 use App\Models\Sale;
+use App\Models\Companie;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 
 class ApiSaleController extends Controller
@@ -25,17 +28,41 @@ class ApiSaleController extends Controller
 
     }
 
-    public function index()
+    public function index(Request $request)
     {
-       return [
-        "テスト" => true
-       ];
+        $products = Product::query();
+        $sales = sale::all();
 
-       $sales = Sale::all();
-            return response()->json([
-                'status' => true,
-                'sales' => $sales
-        ]);
+        $products->join('sales','products.id','=','sales.product_id');	//内部結合
+
+        
+
+        return DB::table('sales')
+            ->selectRaw('id')
+            ->selectRaw('product_id')
+            ->selectRaw('created_at')
+            ->selectRaw('updated_at')
+            ->get();
+    //    return [
+    //     "テスト" => true
+    //    ];
+
+    //    try {
+    //     DB::beginTransaction();
+
+    //     $sale = new Sales();
+    //     return response()->json(Sales::all());
+
+
+    //     DB::commit();
+    //         } catch (Throwable $e) {
+    //     DB::rollBack();
+    //     }
+    //    $sales = Sale::all();
+    //         return response()->json([
+    //             'status' => true,
+    //             'sales' => $sales
+    //     ]);
     }
 
     /**
