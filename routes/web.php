@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\controllers\ProductController;
+use Illuminate\Support\Facades\Auth;
 
 /*
 |--------------------------------------------------------------------------
@@ -16,6 +17,19 @@ use App\Http\controllers\ProductController;
 
 Route::get('/', function () {
     return view('welcome');
+});
+
+Route::get('/', function () {
+    // ウェブサイトのホームページ（'/'のURL）にアクセスした場合のルートです
+    if (Auth::check()) {
+        // ログイン状態ならば
+        return redirect()->route('products.index');
+        // 商品一覧ページ（ProductControllerのindexメソッドが処理）へリダイレクトします
+    } else {
+        // ログイン状態でなければ
+        return redirect()->route('login');
+        //　ログイン画面へリダイレクトします
+    }
 });
 
 Auth::routes();
