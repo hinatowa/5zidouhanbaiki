@@ -56,11 +56,11 @@ class ProductController extends Controller
         // Log::info("info ログ!");
         Log::debug("getlistAjaxスタート");
 
-        $products = Product::query();
-        $companies = companie::all();
+        // $products = Product::query();
+        // $companies = companie::all();
 
-        $products->select('products.*','companies.company_name');
-        $products->join('companies','products.company_id','=','companies.id');	//内部結合
+        // $products->select('products.*','companies.company_name');
+        // $products->join('companies','products.company_id','=','companies.id');	//内部結合
 
 
 
@@ -107,14 +107,13 @@ class ProductController extends Controller
     //         $products->orderBy($sort, $direction);//SELECT * FROM products WHERE product_stock >= '$kagenst'
     //         }
          
-        $product = new Product();
-        var_dump($product);
-        $kensaku = $product->product_kensaku($request);
+        $products = new Product();
+        $kensaku = $product->kensaku($request);
 
-        $products = $kensaku->get();
+        // $products = $kensaku->get();
         Log::debug("getlistAjax終了");
-        return $products;   
-        // return response()->json($products , $companies);      
+        // return $products;   
+        return response()->json($products , $companies);      
 
         //  Product::with('companie')->get();
 
