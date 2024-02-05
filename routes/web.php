@@ -16,14 +16,14 @@ use Illuminate\Support\Facades\Auth;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('auth.login');
 });
 
 Route::get('/', function () {
     // ウェブサイトのホームページ（'/'のURL）にアクセスした場合のルートです
     if (Auth::check()) {
         // ログイン状態ならば
-        return redirect()->route('products.index');
+        return redirect()->route('/products');
         // 商品一覧ページ（ProductControllerのindexメソッドが処理）へリダイレクトします
     } else {
         // ログイン状態でなければ

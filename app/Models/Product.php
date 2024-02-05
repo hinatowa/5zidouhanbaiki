@@ -68,10 +68,9 @@ class Product extends Model
 
         $products = $products->get();
             
-        // Log::debug($keyword);
-        // Log::debug("getlistAjax終了");
         return $products;
     }
+
 
     public $sortable = ['id','companu_id','product_name','price','stock'];//追記(ソートに使うカラムを指定
 
