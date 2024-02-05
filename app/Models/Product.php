@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 use Kyslik\ColumnSortable\Sortable;
+use Illuminate\Support\Facades\Log;
 
 class Product extends Model
 {
@@ -17,14 +18,14 @@ class Product extends Model
         return $this -> belongsTo(Companie::class);
     }
     
-    public function kensaku($request){
+    public function getList($request){
         $products = self::query();
         $products->select('products.*','companies.company_name');
         $products->join('companies','products.company_id','=','companies.id');	//内部結合
-
+        
+        
         /* キーワードから検索処理 */
         $keyword = $request->input('keyword');
-        Log::debug("getlistAjaxkeyword=".$keyword);
         if(!empty($keyword)) {//$keyword　が空ではない場合、検索処理を実行します
             $products->where('product_name', 'LIKE', "%{$keyword}%");//SELECT * FROM products WHERE product_name LIKE '%コーラ%'
             }
@@ -65,8 +66,11 @@ class Product extends Model
             $products->orderBy($sort, $direction);//SELECT * FROM products WHERE product_stock >= '$kagenst'
             }
 
-            $products = $kensaku->get();
-            return $products;
+        $products = $products->get();
+            
+        // Log::debug($keyword);
+        // Log::debug("getlistAjax終了");
+        return $products;
     }
 
     public $sortable = ['id','companu_id','product_name','price','stock'];//追記(ソートに使うカラムを指定

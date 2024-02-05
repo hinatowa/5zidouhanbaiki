@@ -54,7 +54,7 @@ class ProductController extends Controller
         // Log::warning("warning ログ!");
         // Log::notice("notice ログ!");
         // Log::info("info ログ!");
-        Log::debug("getlistAjaxスタート");
+        // Log::debug("getlistAjaxスタート");
 
         // $products = Product::query();
         // $companies = companie::all();
@@ -108,12 +108,15 @@ class ProductController extends Controller
     //         }
          
         $products = new Product();
-        $kensaku = $product->kensaku($request);
+        $products = $products->getList($request);
+        Log::debug($products);
+        // Log::debug($keyword);
 
+        // Log::debug("getlistAjaxスタート");
         // $products = $kensaku->get();
-        Log::debug("getlistAjax終了");
         // return $products;   
-        return response()->json($products , $companies);      
+        return response()->json($products);    
+        // Log::debug("getlistAjax終了");
 
         //  Product::with('companie')->get();
 
