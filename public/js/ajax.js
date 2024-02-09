@@ -86,10 +86,6 @@ function ajaxRequest(columnname,direction){
 
 
 $.ajaxSetup({
-    // headers: {
-    //             'X-CSRF-TOKEN': '{{ csrf_token() }}'
-    //             }
-    
     headers: {
         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         }
