@@ -86,10 +86,14 @@ function ajaxRequest(columnname,direction){
 
 
 $.ajaxSetup({
+    // headers: {
+    //             'X-CSRF-TOKEN': '{{ csrf_token() }}'
+    //             }
+    
     headers: {
-                'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                }
-            });
+        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
 
     $(document).on('click', '.btn-danger', function(){
         let deleteConfirm = confirm('削除してよろしいでしょうか？');                                

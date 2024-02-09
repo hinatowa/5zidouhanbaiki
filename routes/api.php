@@ -19,5 +19,6 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::apiResource('sales', ApiSaleController::class);
+// Route::apiResource('sales', ApiSaleController::class);
+Route::post('sales', [App\Http\Controllers\ApiSaleController::class,'index']);
 
